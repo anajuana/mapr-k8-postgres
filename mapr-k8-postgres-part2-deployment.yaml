@@ -1,0 +1,56 @@
+# PostgreSQL Container
+# Using the MapR Volume Driver Plugin for dynamic provisioning
+
+# Deployment
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mapr-k8-postgres
+  namespace: mapr-apps
+  labels:
+    app: mapr-k8-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mapr-k8-postgres
+  template:
+    metadata:
+      labels:
+        app: mapr-k8-postgres
+    spec:
+      containers:
+      - name: mapr-k8-postgres
+        image: mkieboom/mapr-k8-postgres
+        imagePullPolicy: "Always"
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 500m
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: maprfs-pvc
+          mountPath: "/postgres"
+        env:
+        # Define the global environment variables populated from path-configmap
+        - name: PGDATA_LOCATION
+          value: "/postgres"
+        - name: PG_DB
+          value: "mapr"
+        - name: PG_GROUP
+          value: "mapr"
+        - name: PG_USER
+          value: "mapr"
+        - name: PG_PWD
+          value: "mapr"
+        - name: PG_GID
+          value: "5000"
+        - name: PG_UID
+          value: "5000"
+
+      volumes:
+      - name: maprfs-pvc
+        persistentVolumeClaim:
+          claimName: maprfs-pvc-postgres

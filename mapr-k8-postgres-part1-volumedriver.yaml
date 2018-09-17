@@ -20,9 +20,9 @@ metadata:
 provisioner: mapr.com/maprfs
 parameters:
     # Configure below MapR cluster details to reflect your MapR cluster configuration
-    restServers: "172.16.1.61:8443"
-    cldbHosts: "172.16.1.61"
-    cluster: "demo.mapr.com"
+    restServers: "10.0.0.8:8443"
+    cldbHosts: "10.0.0.8"
+    cluster: "k8s.demo.mapr.com"
     securityType: "unsecure"
     maprSecretName: "mapr-provisioner-secrets"
     maprSecretNamespace: "mapr-apps"
@@ -68,7 +68,3 @@ data:
 # base64 encoding: echo -n 'mapr' | base64
   MAPR_CLUSTER_USER: "bWFwcg=="
   MAPR_CLUSTER_PASSWORD: "bWFwcg=="
-
-
-
-
